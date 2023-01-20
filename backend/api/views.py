@@ -1,9 +1,10 @@
-from django.forms.models import model_to_dict
+# from django.forms.models import model_to_dict
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from products.models import Product
+from products.serializers import ProductSerializer
 
 
 @api_view(['GET'])
@@ -16,10 +17,14 @@ def api_home(request, *args, **kwargs):
     # request.body
 
     data = {}
-    model_data = Product.objects.all().order_by('?').first()
-    if model_data:
-        # serialisation using model_to_dict
-        data = model_to_dict(model_data, fields=['id', 'title', 'price'])
+    instance = Product.objects.all().order_by('?').first()
+    if instance:
+        data = ProductSerializer(instance).data
+
+    # model_data = Product.objects.all().order_by('?').first()
+    # if model_data:
+    #     # serialisation using model_to_dict
+    #     data = model_to_dict(model_data, fields=['id', 'title', 'price'])
     # if model_data:
     #     # the below is serialisation the hard way
     #     data['id'] = model_data.id
