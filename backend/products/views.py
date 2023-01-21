@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, permissions, authentication
 
 from .models import Product
 from .serializers import ProductSerializer
@@ -8,6 +8,8 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     # Combining view is reall comon unless different endpoints are required
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
