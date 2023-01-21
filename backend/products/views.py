@@ -5,6 +5,7 @@ from .serializers import ProductSerializer
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
+    # Combining view is reall comon unless different endpoints are required
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -26,14 +27,40 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
 
 
-class ProductListAPIView(generics.ListAPIView):
-    '''
-    We are not using this method because we use the combined
-    listcreate view above
-    '''
-
+class ProductUpdateAPIView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if not instance.content:
+            instance.content = instance.title
 
 
-product_list_view = ProductListAPIView.as_view()
+product_update_view = ProductUpdateAPIView.as_view()
+
+
+class ProductDestroyAPIView(generics.DestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+
+
+product_delete_view = ProductDestroyAPIView.as_view()
+
+
+# class ProductListAPIView(generics.ListAPIView):
+#     '''
+#     We are not using this method because we use the combined
+#     listcreate view above
+#     '''
+
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+
+
+# product_list_view = ProductListAPIView.as_view()
