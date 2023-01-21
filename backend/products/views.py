@@ -9,8 +9,14 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     # Combining view is reall comon unless different endpoints are required
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
+    authentication_classes = [
+        authentication.SessionAuthentication,
+        authentication.TokenAuthentication,
+    ]
+    permission_classes = [
+        permissions.IsAdminUser,
+        IsStaffEditorPermission,
+    ]
 
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
