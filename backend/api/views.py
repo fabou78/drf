@@ -39,4 +39,4 @@ def api_home(request, *args, **kwargs):
     #     data['content'] = model_data.content
     #     data['price'] = model_data.price
 
-    return Response(data)
+    # return Response(data)
