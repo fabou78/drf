@@ -16,10 +16,17 @@ def api_home(request, *args, **kwargs):
     # print(dir(request))
     # request.body
 
-    data = {}
-    instance = Product.objects.all().order_by('?').first()
-    if instance:
-        data = ProductSerializer(instance).data
+    serializer = ProductSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        # instance = serializer.save()
+        print(serializer.data)
+        return Response(serializer.data)
+    return Response({'invalid': 'not good data'}, status=400)
+
+    # data = {}
+    # instance = Product.objects.all().order_by('?').first()
+    # if instance:
+    #     data = ProductSerializer(instance).data
 
     # model_data = Product.objects.all().order_by('?').first()
     # if model_data:
