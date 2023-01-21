@@ -53,6 +53,31 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
 product_delete_view = ProductDestroyAPIView.as_view()
 
 
+# For Class based view we declare functions to handle different cases while
+# for function based view we us conditions
+# class ProductMixinView(
+#     mixins.ListModelMixin,
+#     mixins.RetrieveModelMixin,
+#     mixins.CreateModelMixin,
+#     generics.GenericAPIView,
+# ):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#     lookup_field = 'pk'
+
+#     def get(self, request, *args, **kwargs):  # HTTP-> get
+#         pk = kwargs.get('pk')
+#         if pk is not None:
+#             return self.retrieve(request, *args, **kwargs)
+#         return self.list(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):  # HTTP-> get
+#         return self.create(request, *args, **kwargs)
+
+
+# product_mixin_view = ProductMixinView.as_view()
+
+
 # class ProductListAPIView(generics.ListAPIView):
 #     '''
 #     We are not using this method because we use the combined

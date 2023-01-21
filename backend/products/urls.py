@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     # as_view() not required below because configured in views.py
     path('', views.product_list_create_view),
+    # path('', views.product_mixin_view),
     # The / 'slash at the end is important
     path('<int:pk>/', views.ProductDetailAPIView.as_view()),
     path('<int:pk>/update/', views.product_update_view),
