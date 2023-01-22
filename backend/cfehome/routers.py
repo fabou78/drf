@@ -6,5 +6,5 @@ from products.viewsets import ProductViewSet, ProducGenericViewSet
 
 router = DefaultRouter()
 router.register('product-abc', ProducGenericViewSet, basename='products')
-print(router.urls)
+# print(router.urls)
 urlpatterns = router.urls

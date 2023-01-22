@@ -11,7 +11,8 @@ class ProductSerializer(serializers.ModelSerializer):
     detail_url = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     # Below is another example using HyperlinkedIdentityField which
-    # will only work with ModelSerializer and also not need the
+    # will only work with ModelSerializer and also not need the corresponding
+    # get method
     url = serializers.HyperlinkedIdentityField(
         view_name='product-detail',
         lookup_field='pk',
@@ -30,6 +31,18 @@ class ProductSerializer(serializers.ModelSerializer):
             'sale_price',
             'my_discount',
         ]
+
+    def validate_title(self, value):
+        queryset = Product.objects.filter(title__exact=value)  # or __iexact
+        if queryset.exists():
+            raise serializers.ValidationError(
+                f'{value} is already a product name'
+            )
+        return value
+
+    # Another way to create validation would be to create a module
+    # i.e. validations.py containing the above function, import it and call it
+    # this way =>  title = serializers.CharField(validators=[validate_title])
 
     def get_detail_url(self, obj):
         request = self.context.get('request')  # self.request not usable here
