@@ -3,6 +3,8 @@ from rest_framework.reverse import reverse
 
 from .models import Product
 
+from api.serializers import UserPublicSerializers
+
 
 class ProductSerializer(serializers.ModelSerializer):
     # Below we are renaming the product model's property from get_discount to
@@ -17,12 +19,15 @@ class ProductSerializer(serializers.ModelSerializer):
         view_name='product-detail',
         lookup_field='pk',
     )
+    # Below we are using a serializer inside of another to get data from a
+    # foreign key (in this case User) read_only need to be repeated again
+    owner = UserPublicSerializers(source='user', read_only=True)
 
     class Meta:
         model = Product
         fields = [
             'id',
-            # 'user',
+            'owner',
             'detail_url',
             'edit_url',
             'url',
