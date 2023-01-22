@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions, authentication
+from rest_framework import generics, permissions
 
 from .models import Product
 from .serializers import ProductSerializer
@@ -9,10 +9,10 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     # Combining view is reall comon unless different endpoints are required
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    authentication_classes = [
-        authentication.SessionAuthentication,
-        authentication.TokenAuthentication,
-    ]
+    # authentication_classes = [
+    #     authentication.SessionAuthentication,
+    #     authentication.TokenAuthentication,
+    # ] No longer required because we have condigured default auth in settings
     permission_classes = [
         permissions.IsAdminUser,
         IsStaffEditorPermission,
