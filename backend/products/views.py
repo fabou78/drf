@@ -24,7 +24,17 @@ class ProductListCreateAPIView(
         content = serializer.validated_data.get('content') or None
         if content is None:
             content = title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user, content=content)
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        request = self.request
+        user = request.user
+        if not user.is_authenticated:
+            return Product.objects.none()
+        print(f'{request.user} request user')
+        print(f'{user} user')
+        return qs.filter(user=user)
 
 
 # another way to form the url (see products.urls.py)
